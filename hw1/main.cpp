@@ -55,7 +55,7 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
                          0, 0, 1, 0;
     //following variables need to consider look at which direction and where is the geometry
     float zdepth = zNear - zFar;
-    float yheight = -zNear*tanf(eye_fov/2);
+    float yheight = -2.0*zNear*tanf(eye_fov/2);
     float xwidth = yheight*aspect_ratio;
     printf("B");
     orthoscale << 2/xwidth,0,0,0,

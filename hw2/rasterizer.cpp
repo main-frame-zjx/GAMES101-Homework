@@ -54,6 +54,7 @@ static std::tuple<float, float, float> insideTriangle(int x, int y, const Vector
 
 }
 
+
 static std::tuple<float, float, float> computeBarycentric2D(float x, float y, const Vector3f* v)
 {
     
@@ -112,6 +113,8 @@ void rst::rasterizer::draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, col_buf
     }
 }
 
+
+
 //Screen space rasterization
 void rst::rasterizer::rasterize_triangle(const Triangle& t) {
     auto v = t.toVector4();
@@ -122,17 +125,12 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
     x_min = min(t.v[0].x(), min(t.v[1].x(), t.v[2].x()));
     y_max = max(t.v[0].y(), max(t.v[1].y(), t.v[2].y()));
     y_min = min(t.v[0].y(), min(t.v[1].y(), t.v[2].y()));
-    cout<< x_min <<" "<<x_max<<endl;
-    cout<< y_min <<" "<<y_max<<endl;
     // iterate through the pixel and find if the current pixel is inside the triangle
     for(int w = int(x_min);w<x_max;w++){
         for(int h = int(y_min);h<y_max;h++){
             //cout<< w <<" "<<h<<endl;
             float alpha,beta,gamma;
             auto tupl = insideTriangle(w+0.5, h+0.5, t.v);
-            // alpha = get<0>(tupl);
-            // beta = get<1>(tupl);
-            // gamma = get<2>(tupl);
             tie(alpha,beta,gamma) = tupl;
             bool inTriangle = false;
             if((alpha > 0.0 && beta > 0.0 && gamma > 0.0) ||
