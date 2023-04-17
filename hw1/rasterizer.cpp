@@ -145,6 +145,7 @@ void rst::rasterizer::draw(rst::pos_buf_id pos_buffer, rst::ind_buf_id ind_buffe
     float f2 = (100 + 0.1) / 2.0;
 
     Eigen::Matrix4f mvp = projection * view * model;
+    printf("multi succ\n");
     for (auto& i : ind)
     {
         Triangle t;
@@ -165,7 +166,7 @@ void rst::rasterizer::draw(rst::pos_buf_id pos_buffer, rst::ind_buf_id ind_buffe
             vert.y() = 0.5*height*(vert.y()+1.0);
             vert.z() = vert.z() * f1 + f2;
         }
-
+        printf("for succ\n");
         for (int i = 0; i < 3; ++i)
         {
             t.setVertex(i, v[i].head<3>());
@@ -176,16 +177,21 @@ void rst::rasterizer::draw(rst::pos_buf_id pos_buffer, rst::ind_buf_id ind_buffe
         t.setColor(0, 255.0,  0.0,  0.0);
         t.setColor(1, 0.0  ,255.0,  0.0);
         t.setColor(2, 0.0  ,  0.0,255.0);
-
+        printf("set color succ\n");
         rasterize_wireframe(t);
+        printf("rasterize_wireframe succ\n");
     }
 }
 
 void rst::rasterizer::rasterize_wireframe(const Triangle& t)
 {
+    printf("1");
     draw_line(t.c(), t.a());
+    printf("2");
     draw_line(t.c(), t.b());
+    printf("3");
     draw_line(t.b(), t.a());
+    printf("4\n");
 }
 
 void rst::rasterizer::set_model(const Eigen::Matrix4f& m)

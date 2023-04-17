@@ -27,14 +27,15 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
     // Create the model matrix for rotating the triangle around the Z axis.
     // Then return it.
     float angle_rad = rotation_angle/180.0f*acos(-1.0f);
-    printf("A");
+    //printf("A");
     model << cos(angle_rad), -sin(angle_rad), 0.0, 0.0,
              sin(angle_rad),  cos(angle_rad), 0.0, 0.0,
              0.0, 0.0, 1.0, 0.0,
              0.0, 0.0, 0.0, 1.0; 
-    printf("B\n");
+    //printf("B\n");
     return model;
 }
+
 
 //define fov means vertical fov. radio means width:height
 Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
@@ -47,6 +48,7 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
     // TODO: Implement this function
     // Create the projection matrix for the given parameters.
     // Then return it.
+    printf("A");
     perspective2ortho << zNear, 0, 0, 0,
                          0, zNear, 0, 0,
                          0, 0, zNear+zFar, -zNear*zFar,
@@ -55,6 +57,7 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
     float zdepth = zNear - zFar;
     float yheight = -zNear*tanf(eye_fov/2);
     float xwidth = yheight*aspect_ratio;
+    printf("B");
     orthoscale << 2/xwidth,0,0,0,
                   0,2/yheight,0,0,
                   0,0,2/zdepth,0,
@@ -64,8 +67,11 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
                   0,0,1,-zdepth/2,
                   0,0,0,1;
     projection = orthoscale*orthotrans*perspective2ortho;
+    printf("C\n");
     return projection;
 }
+
+
 
 int main(int argc, const char** argv)
 {
@@ -119,11 +125,12 @@ int main(int argc, const char** argv)
         r.set_model(get_model_matrix(angle));
         r.set_view(get_view_matrix(eye_pos));
         r.set_projection(get_projection_matrix(45, 1, 0.1, 50));
-
+        printf("set succ\n");
         r.draw(pos_id, ind_id, rst::Primitive::Triangle);
-
+        printf("draw succ\n");
         cv::Mat image(700, 700, CV_32FC3, r.frame_buffer().data());
         image.convertTo(image, CV_8UC3, 1.0f);
+        printf("convert succ\n");
         cv::imshow("image", image);
         key = cv::waitKey(10);
 
